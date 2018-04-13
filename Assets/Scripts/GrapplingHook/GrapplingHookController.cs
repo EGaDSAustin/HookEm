@@ -25,7 +25,7 @@ public class GrapplingHookController : MonoBehaviour
             RaycastHit hit;
             if (Physics.Raycast(ray, out hit))
             {
-                SendGrapplingHook(hit.point, sendSpeed);
+                StartCoroutine(SendGrapplingHook(hit.point, sendSpeed));
             }
             else
             {
@@ -36,14 +36,16 @@ public class GrapplingHookController : MonoBehaviour
         UpdateLineRenderer();
     }
 
-    private void SendGrapplingHook (Vector3 newPosition, float speed)
+    private IEnumerator SendGrapplingHook (Vector3 newPosition, float speed)
     {
-        //Vector3 originalPosition = );
-        //for (float t = 0; t < 1; t += speed)
-        //{
-        endLocation.MovePosition(newPosition);//Vector3.Lerp());
-        //    yield return null;
-        //}
+        Vector3 originalPosition = endLocation.position;
+        for (float t = 0; t < 1; t += speed * Time.fixedDeltaTime)
+        {
+            endLocation.MovePosition(Vector3.Lerp(originalPosition, newPosition, t));
+            yield return new WaitForFixedUpdate();
+        }
+
+        endLocation.MovePosition(newPosition);
     }
 
     private void UpdateLineRenderer ()
