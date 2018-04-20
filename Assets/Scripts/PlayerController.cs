@@ -44,6 +44,8 @@ public class PlayerController : MonoBehaviour
 
     private void TurnCamera(Vector3 rotation)
     {
+        //TODO: bind 
+        Debug.Log(camera.transform.rotation);
         camera.transform.rotation *= Quaternion.Euler(rotation * rotationSpeed);
     }
 }
