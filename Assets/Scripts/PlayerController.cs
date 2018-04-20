@@ -9,6 +9,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float translationSpeed;
     [SerializeField] private float maxTranslationSpeed;
     [SerializeField] private float rotationSpeed;
+    [SerializeField] private float jumpForce;
 
     void Start()
     {
@@ -23,18 +24,26 @@ public class PlayerController : MonoBehaviour
 
         MovePlayer(playerRigidbody.transform.TransformDirection(new Vector3(horizontal, 0,vertical)));
 
+        //jump
+        jump(new Vector3(0, Input.GetAxis("Jump"),0));
+
         //camera rotation
         TurnPlayer(new Vector3(0, Input.GetAxis("Mouse X"), 0));
         TurnCamera(new Vector3(-1 * Input.GetAxis("Mouse Y"),0, 0));
 
         
     }
-
+    
     private void MovePlayer (Vector3 velocity)
     {
         Vector3 newVelocity = playerRigidbody.velocity + (velocity * translationSpeed);
         playerRigidbody.velocity = Vector3.ClampMagnitude(newVelocity, maxTranslationSpeed);
+    }
 
+    private void jump(Vector3 jump)
+    {
+        Vector3 newVelocity = playerRigidbody.velocity + (jump * jumpForce);
+        playerRigidbody.velocity = Vector3.ClampMagnitude(newVelocity, maxTranslationSpeed);
     }
 
     private void TurnPlayer (Vector3 rotation)
